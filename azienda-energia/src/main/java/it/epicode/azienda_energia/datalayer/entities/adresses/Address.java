@@ -1,6 +1,7 @@
 package it.epicode.azienda_energia.datalayer.entities.adresses;
 
 import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
+
 import jakarta.persistence.*;
 import lombok.*;
 

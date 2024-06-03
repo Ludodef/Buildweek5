@@ -20,7 +20,7 @@ public class Municipality extends BaseEntity {
     private Long id;
     private String name;
     @ManyToOne
-    private Provence provence;
+    private Province province;
     @OneToMany(mappedBy = "municipality")
     private List<Address> addresses;
 }

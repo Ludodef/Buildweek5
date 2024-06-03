@@ -7,21 +7,21 @@ import lombok.*;
 import java.util.List;
 
 @Entity
-@Table(name = "provences")
+@Table(name = "provinces")
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
-public class Provence extends BaseEntity {
+public class Province extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "provence_seq")
-    @SequenceGenerator(name = "provence_seq", sequenceName = "provence_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "province_seq")
+    @SequenceGenerator(name = "province_seq", sequenceName = "province_seq")
     private Long id;
     private String name;
     private String acronym;
     private String region;
-    @OneToMany(mappedBy = "provence")
+    @OneToMany(mappedBy = "province")
     private List<Municipality> municipalities;
 }
