@@ -5,6 +5,8 @@ import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "addresses")
 @Data
