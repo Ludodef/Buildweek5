@@ -14,12 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Municipality extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "municipality_seq")
-    @SequenceGenerator(name = "municipality_seq", sequenceName = "municipality_seq")
-    private Long id;
     private String name;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Province province;
     @OneToMany(mappedBy = "municipality")
     private List<Address> addresses;

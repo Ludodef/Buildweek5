@@ -14,10 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Roles extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roles_seq")
-    @SequenceGenerator(name = "roles_seq", sequenceName = "roles_seq")
-    private long id;
+
     @Column(length = 15, unique = true)
     private String name;
     @ManyToMany(mappedBy = "roles")

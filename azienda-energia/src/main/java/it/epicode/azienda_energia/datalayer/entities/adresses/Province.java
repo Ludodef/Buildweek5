@@ -15,10 +15,6 @@ import java.util.List;
 @Builder(setterPrefix = "with")
 public class Province extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "province_seq")
-    @SequenceGenerator(name = "province_seq", sequenceName = "province_seq")
-    private Long id;
     private String name;
     private String acronym;
     private String region;

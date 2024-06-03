@@ -15,10 +15,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Invoice extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoice_seq")
-    @SequenceGenerator(name = "invoice_seq", sequenceName = "invoice_seq")
-    private Long id;
     private LocalDate date;
     private double amount;
     @Column(unique = true)

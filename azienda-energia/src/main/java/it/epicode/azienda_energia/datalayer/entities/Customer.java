@@ -18,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Customer extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
-    @SequenceGenerator(name = "customer_seq", sequenceName = "customer_seq")
-    private Long id;
     @Column(length = 50, unique = true)
     private String businessName;
     @Column(length = 11, unique = true)
@@ -46,7 +42,7 @@ public class Customer extends BaseEntity{
     private String companyLogo;
     @ManyToOne(cascade = CascadeType.ALL)
     private Address registeredOffice;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Address headquarters;
     @Enumerated(EnumType.STRING)
     private CustomerType type;

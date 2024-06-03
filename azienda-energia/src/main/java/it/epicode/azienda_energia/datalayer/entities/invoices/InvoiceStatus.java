@@ -13,10 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class InvoiceStatus extends BaseEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "invoiceStatus_seq")
-    @SequenceGenerator(name = "invoiceStatus_seq", sequenceName = "invoiceStatus_seq")
-    private Long id;
     @Column(length = 50, unique = true)
     private String type;
 }

@@ -17,10 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Address extends BaseEntity implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
-    @SequenceGenerator(name = "address_seq", sequenceName = "address_seq")
-    private Long id;
+
     private String street;
     private String number;
     private String location;
@@ -28,8 +25,8 @@ public class Address extends BaseEntity implements Serializable {
     @ManyToOne
     private Municipality municipality;
 
-    @OneToMany(mappedBy = "headquarters")
-    private List<Customer> customerHeadquarters;
+    @OneToOne(mappedBy = "headquarters")
+    private Customer customerHeadquarters;
 
     @OneToMany(mappedBy = "registeredOffice")
     private List<Customer> customerRegisteredOffice;

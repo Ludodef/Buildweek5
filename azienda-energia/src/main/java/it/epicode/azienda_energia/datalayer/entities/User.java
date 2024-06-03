@@ -14,10 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class User extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
-    @SequenceGenerator(name = "users_seq", sequenceName = "users_seq")
-    private long id;
     @Column(length = 125, unique = true, nullable = false)
     @EqualsAndHashCode.Include
     private String username;
