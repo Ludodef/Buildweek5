@@ -19,7 +19,7 @@ public class Municipality extends BaseEntity {
     @SequenceGenerator(name = "municipality_seq", sequenceName = "municipality_seq")
     private Long id;
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Province province;
     @OneToMany(mappedBy = "municipality")
     private List<Address> addresses;

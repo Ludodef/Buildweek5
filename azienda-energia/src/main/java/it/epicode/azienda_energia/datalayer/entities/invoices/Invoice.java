@@ -21,6 +21,7 @@ public class Invoice extends BaseEntity {
     private Long id;
     private LocalDate date;
     private double amount;
+    @Column(unique = true)
     private String serialNumber;
 
     @ManyToOne
