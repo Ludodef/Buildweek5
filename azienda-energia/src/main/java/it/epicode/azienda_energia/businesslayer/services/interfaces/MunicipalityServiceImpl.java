@@ -34,7 +34,7 @@ public class MunicipalityServiceImpl implements MunicipalityService{
     @Override
     public List<Municipality> addMunicipality() throws IOException {
         List<Municipality> municipality = new ArrayList<>();
-        try (Stream<String> lines = Files.lines(Path.of(dir + "/src/main/resources/municipalities_provinces/comuni-italiani.csv"), StandardCharsets.ISO_8859_1)) {
+        try (Stream<String> lines = Files.lines(Path.of(dir + "/src/main/resources/municipalities_provinces/comuni-italiani.csv"), StandardCharsets.UTF_8)) {
             municipality = lines
                     .skip(1)
                     .map(line -> line.split(";"))
