@@ -52,14 +52,14 @@ public class InvoiceStatusController {
         return new ResponseEntity<>(a, HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<InvoiceStatus> updateInvoiceStatus (
-            @PathVariable Long id,
-            @RequestBody InvoiceStatus invoiceStatusModified
-    ){
-        var a = invoiceStatus.update(id, invoiceStatusModified);
-        return new ResponseEntity<>(a, HttpStatus.OK);
-    }
+//    @PutMapping("{id}")
+//    public ResponseEntity<InvoiceStatus> updateInvoiceStatus (
+//            @PathVariable Long id,
+//            @RequestBody InvoiceStatus invoiceStatusModified
+//    ){
+//        var a = invoiceStatus.update(id, invoiceStatusModified);
+//        return new ResponseEntity<>(a, HttpStatus.OK);
+//    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<InvoiceStatus> deleteInvoiceStatus (

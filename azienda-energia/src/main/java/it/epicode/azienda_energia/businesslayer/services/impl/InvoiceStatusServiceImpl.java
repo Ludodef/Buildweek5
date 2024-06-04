@@ -40,16 +40,10 @@ public class InvoiceStatusServiceImpl implements InvoiceStatusService {
     }
 
     @Override
-    public InvoiceStatus update(Long id, InvoiceStatus e) {
-        var invoice = this.getById(id);
-        utils.copy(e, invoice);
-        return invoiceStatusRepository.save(invoice);
+    public InvoiceStatus delete(Long id) {
+        var i = this.getById(id);
+        invoiceStatusRepository.delete(i);
+        return i;
     }
 
-    @Override
-    public InvoiceStatus delete(Long id) {
-        var a = this.getById(id);
-        invoiceStatusRepository.delete(a);
-        return a;
-    }
 }

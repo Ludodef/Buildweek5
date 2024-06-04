@@ -1,6 +1,5 @@
 package it.epicode.azienda_energia.datalayer.entities.invoices;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
 import it.epicode.azienda_energia.datalayer.entities.Customer;
 import jakarta.persistence.*;
@@ -16,12 +15,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class Invoice extends BaseEntity {
-    private LocalDate date;
+
+    @Builder.Default
+    private LocalDate date = LocalDate.now();
+
     private double amount;
 
     @Column(unique = true)
+    private Long serialNumber;
 
-    private String serialNumber;
     @ManyToOne
     private InvoiceStatus status;
     @ManyToOne

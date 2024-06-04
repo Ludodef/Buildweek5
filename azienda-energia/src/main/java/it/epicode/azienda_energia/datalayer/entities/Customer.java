@@ -49,8 +49,6 @@ public class Customer extends BaseEntity{
     private Address headquarters;
     @Enumerated(EnumType.STRING)
     private CustomerType type;
-    @OneToMany(mappedBy = "customer")
-    private List<Invoice> invoices;
 
 
 

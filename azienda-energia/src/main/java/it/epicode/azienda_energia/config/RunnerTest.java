@@ -1,5 +1,7 @@
 package it.epicode.azienda_energia.config;
 
+import it.epicode.azienda_energia.businesslayer.services.dto.InvoiceStatusDTO;
+import it.epicode.azienda_energia.businesslayer.services.impl.InvoiceStatusServiceImpl;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.MunicipalityService;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,29 @@ public class RunnerTest implements CommandLineRunner {
     @Autowired
     MunicipalityService municipalityImpl;
 
+    @Autowired
+    InvoiceStatusServiceImpl invoiceStatusService;
+
     @Override
     public void run(String... args) throws Exception {
         provinceImpl.addProvince();
         municipalityImpl.addMunicipality();
+        invoiceStatusService.save(InvoiceStatusDTO.builder()
+                        .withType("IN LAVORAZIONE")
+                .build());
+        invoiceStatusService.save(InvoiceStatusDTO.builder()
+                .withType("INVIATA")
+                .build());
+        invoiceStatusService.save(InvoiceStatusDTO.builder()
+                .withType("RICEVUTA")
+                .build());
+        invoiceStatusService.save(InvoiceStatusDTO.builder()
+                .withType("PAGATA")
+                .build());
+        invoiceStatusService.save(InvoiceStatusDTO.builder()
+                .withType("RESPINTA")
+                .build());
+
     }
 }
 

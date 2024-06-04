@@ -15,13 +15,12 @@ import java.time.LocalDate;
 @Builder(setterPrefix = "with")
 public class InvoiceDTO extends BaseDTO {
 
-    private LocalDate date;
     private double amount;
     @Column(unique = true)
-    private String serialNumber;
+    private Long serialNumber;
 
     @ManyToOne
     private InvoiceStatus status;
     @ManyToOne
-    private Customer customer;
+    private String customer;
 }

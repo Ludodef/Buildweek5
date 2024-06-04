@@ -16,6 +16,4 @@ public class InvoiceStatus extends BaseEntity {
     @Column(length = 50, unique = true)
     private String type;
 
-    @OneToMany(mappedBy = "status")
-    private List<Invoice> invoices;
 }
