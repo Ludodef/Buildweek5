@@ -20,7 +20,5 @@ public class Province extends BaseEntity {
     private String name;
     private String acronym;
     private String region;
-    @OneToMany(mappedBy = "province")
-    @JsonBackReference
-    private List<Municipality> municipalities;
+
 }

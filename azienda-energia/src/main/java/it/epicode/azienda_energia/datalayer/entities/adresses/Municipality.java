@@ -17,10 +17,7 @@ import java.util.List;
 @Builder(setterPrefix = "with")
 public class Municipality extends BaseEntity {
     private String name;
+
     @ManyToOne()
-    @JsonBackReference
     private Province province;
-    @OneToMany(mappedBy = "municipality")
-    @JsonManagedReference
-    private List<Address> addresses;
 }

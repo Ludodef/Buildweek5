@@ -2,7 +2,6 @@ package it.epicode.azienda_energia.presentationlayer.api.models;
 
 import it.epicode.azienda_energia.presentationlayer.utility.CAPValid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 
 public record AddressModel (
         @NotBlank(message = "La via non può essere omessa")
@@ -15,6 +14,7 @@ public record AddressModel (
         String zip,
         @NotBlank(message = "Il comune non può essere vuoto")
                 //IMPLEMNTARE VALIDAZIONE
+
         String municipality
 ) {
 }

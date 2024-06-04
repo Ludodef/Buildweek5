@@ -64,9 +64,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address delete(Long id) {
+        try {
             var a = this.getById(id);
             address.delete(a);
             return a;
-            //IMPLEMENTARE TRY CATCH
+        } catch (Exception e) {
+            log.error(String.format("Error deleting address with id = %s", id), e);
+            throw new RuntimeException();
+        }
     }
 }

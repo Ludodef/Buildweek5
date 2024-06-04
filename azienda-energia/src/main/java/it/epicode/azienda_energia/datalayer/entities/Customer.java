@@ -24,8 +24,11 @@ public class Customer extends BaseEntity{
     private Long vatNumber;
     @Column(length = 50, unique = true)
     private String businessEmail;
-    private LocalDate insertionDate;
-    private LocalDate lastContact;
+
+    @Builder.Default
+    private LocalDate insertionDate = LocalDate.now();
+    @Builder.Default
+    private LocalDate lastContact  = LocalDate.now();
     private double annualSales;
     @Column(length = 50, unique = true)
     private String pec;

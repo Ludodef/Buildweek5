@@ -2,6 +2,7 @@ package it.epicode.azienda_energia.config;
 
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.ApiValidationException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.NotFoundException;
+import it.epicode.azienda_energia.presentationlayer.api.exceptions.duplicated.DuplicateKeyException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -31,10 +32,10 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             ){}
 
 
-//    @ExceptionHandler(DuplicateKeyException.class)
-//    protected ResponseEntity<?> handleDuplicatedKey(DuplicateKeyException e) {
-//        return new ResponseEntity<>(new ExceptionInfo(e.getMessage(), e.key), e.status);
-//    }
+    @ExceptionHandler(DuplicateKeyException.class)
+    protected ResponseEntity<?> handleDuplicatedKey(DuplicateKeyException e) {
+        return new ResponseEntity<>(new ExceptionInfo(e.getMessage(), e.key), e.status);
+    }
 
     @ExceptionHandler(NotFoundException.class)
     protected ResponseEntity<?> handleNotFoundedElement(NotFoundException e) {

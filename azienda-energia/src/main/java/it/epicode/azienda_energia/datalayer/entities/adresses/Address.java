@@ -1,6 +1,7 @@
 package it.epicode.azienda_energia.datalayer.entities.adresses;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
 
@@ -18,19 +19,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
-public class Address extends BaseEntity implements Serializable {
+public class Address extends BaseEntity {
 
     private String street;
     private String number;
     private String location;
     private int zip;
+
     @ManyToOne
-    @JsonBackReference
     private Municipality municipality;
 
-    @OneToOne(mappedBy = "headquarters")
-    private Customer customerHeadquarters;
-
-    @OneToMany(mappedBy = "registeredOffice")
-    private List<Customer> customerRegisteredOffice;
 }

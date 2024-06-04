@@ -1,11 +1,13 @@
 package it.epicode.azienda_energia.presentationlayer.api;
 
 import it.epicode.azienda_energia.businesslayer.services.dto.AddressDTO;
+import it.epicode.azienda_energia.businesslayer.services.dto.InvoiceStatusDTO;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.AddressService;
+import it.epicode.azienda_energia.businesslayer.services.interfaces.InvoiceStatusService;
 import it.epicode.azienda_energia.datalayer.entities.adresses.Address;
+import it.epicode.azienda_energia.datalayer.entities.invoices.InvoiceStatus;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.ApiValidationException;
-import it.epicode.azienda_energia.presentationlayer.api.models.AddressModel;
-import lombok.extern.slf4j.Slf4j;
+import it.epicode.azienda_energia.presentationlayer.api.models.InvoiceStatusModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,60 +19,53 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/address")
-@Slf4j
-public class AddressController {
-
+@RequestMapping("/api/invoice-status")
+public class InvoiceStatusController {
     @Autowired
-    AddressService address;
+    InvoiceStatusService invoiceStatus;
 
     @GetMapping
-    public ResponseEntity<Page<Address>> getAllAddresses (Pageable p) {
-        var allAddresses = address.getAll(p);
+    public ResponseEntity<Page<InvoiceStatus>> getAllInvoicesStatus (Pageable p) {
+        var allInvoicesStatus = invoiceStatus.getAll(p);
         var headers = new HttpHeaders();
-        headers.add("Totale", String.valueOf(allAddresses.getTotalElements()));
-        return new ResponseEntity<>(allAddresses, headers, HttpStatus.OK);
+        headers.add("Totale", String.valueOf(allInvoicesStatus.getTotalElements()));
+        return new ResponseEntity<>(allInvoicesStatus, headers, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Address> getAddress (@PathVariable Long id) {
-        var e = address.getById(id);
+    public ResponseEntity<InvoiceStatus> getInvoiceStatus (@PathVariable Long id) {
+        var e = invoiceStatus.getById(id);
         return new ResponseEntity<>(e, HttpStatus.FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Address> addAddress (
-            @RequestBody @Validated AddressModel model,
+    public ResponseEntity<InvoiceStatus> addInvoiceStatus (
+            @RequestBody @Validated InvoiceStatusModel model,
             BindingResult validator) {
         if (validator.hasErrors()) {
             throw new ApiValidationException(validator.getAllErrors());
         }
-        var a = address.save(AddressDTO.builder()
-                        .withStreet(model.street())
-                        .withNumber(model.number())
-                        .withLocation(model.location())
-                        .withZip(Integer.parseInt(model.zip()))
-                        .withMunicipality(model.municipality())
+        var a = invoiceStatus.save(InvoiceStatusDTO.builder()
+                .withType(model.type())
                 .build());
 
         return new ResponseEntity<>(a, HttpStatus.CREATED);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Address> updateAddress (
+    public ResponseEntity<InvoiceStatus> updateInvoiceStatus (
             @PathVariable Long id,
-            @RequestBody Address addressModified
+            @RequestBody InvoiceStatus invoiceStatusModified
     ){
-        var a = address.update(id, addressModified);
+        var a = invoiceStatus.update(id, invoiceStatusModified);
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Address> deleteAddress (
+    public ResponseEntity<InvoiceStatus> deleteInvoiceStatus (
             @PathVariable Long id
     ) {
-        var a = address.delete(id);
-        log.info("Address: {}", a);
+        var a = invoiceStatus.delete(id);
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
 }

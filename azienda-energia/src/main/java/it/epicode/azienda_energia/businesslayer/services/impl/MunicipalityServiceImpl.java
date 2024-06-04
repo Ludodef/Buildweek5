@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -40,16 +41,16 @@ public class MunicipalityServiceImpl implements MunicipalityService {
                     .skip(1)
                     .map(line -> line.split(";"))
                     .map(line ->
-                            {
-                            Province province = provinceRepository.findOneByName(line[3])
-                            .orElseThrow(() -> new RuntimeException("Province not found: " + line[3]));
-                            return Municipality.builder()
-                            .withName(line[2])
-                            .withProvince(
-                                    province
-                            )
-                            .build();
-                            }).toList();
+                    {
+                        Province province = provinceRepository.findOneByName(line[3])
+                                .orElseThrow(() -> new RuntimeException("Province not found: " + line[3]));
+                        return Municipality.builder()
+                                .withName(line[2])
+                                .withProvince(
+                                        province
+                                )
+                                .build();
+                    }).toList();
             municipalityRepository.saveAll(municipality);
             log.info("municipality salvate");
         } catch (IOException e) {
@@ -60,5 +61,10 @@ public class MunicipalityServiceImpl implements MunicipalityService {
             throw new NotFoundException();
         }
         return municipality;
+    }
+
+    @Override
+    public Optional<Municipality> findByName(String name) {
+        return municipalityRepository.findOneByName(name);
     }
 }
