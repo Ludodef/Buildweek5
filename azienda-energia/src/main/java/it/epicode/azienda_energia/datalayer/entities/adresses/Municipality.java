@@ -18,9 +18,9 @@ import java.util.List;
 public class Municipality extends BaseEntity {
     private String name;
     @ManyToOne()
-    @JsonManagedReference
+    @JsonBackReference
     private Province province;
     @OneToMany(mappedBy = "municipality")
-    @JsonBackReference
+    @JsonManagedReference
     private List<Address> addresses;
 }

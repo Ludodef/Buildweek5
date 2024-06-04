@@ -25,7 +25,7 @@ public class Address extends BaseEntity implements Serializable {
     private String location;
     private int zip;
     @ManyToOne
-    @JsonManagedReference
+    @JsonBackReference
     private Municipality municipality;
 
     @OneToOne(mappedBy = "headquarters")
