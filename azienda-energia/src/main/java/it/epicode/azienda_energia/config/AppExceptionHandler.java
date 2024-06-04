@@ -1,10 +1,12 @@
 package it.epicode.azienda_energia.config;
 
+import it.epicode.azienda_energia.presentationlayer.api.exceptions.ApiValidationException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.NotFoundException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -39,16 +41,16 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new ExceptionInfo(e.getMessage(), String.valueOf(e.idNotFound)), HttpStatus.NOT_FOUND);
     }
 
-//    @ExceptionHandler(ApiValidationException.class)
-//    protected ResponseEntity<?> handleApiValidationException(ApiValidationException e) {
-//        var body = e.errorsList.stream() //
-//                .filter(error -> error instanceof FieldError)//
-//                .map(error -> (FieldError) error) //
-//                .map(error -> new ExceptionValidationInfo(error.getField(), error.getDefaultMessage())//
-//                ).toList();
-//
-//        return new ResponseEntity<>(body, e.status);
-//    }
+    @ExceptionHandler(ApiValidationException.class)
+    protected ResponseEntity<?> handleApiValidationException(ApiValidationException e) {
+        var body = e.errorsList.stream() //
+                .filter(error -> error instanceof FieldError)//
+                .map(error -> (FieldError) error) //
+                .map(error -> new ExceptionValidationInfo(error.getField(), error.getDefaultMessage())//
+                ).toList();
+
+        return new ResponseEntity<>(body, e.status);
+    }
 
 
 //    @ExceptionHandler(InvalidLoginException.class)

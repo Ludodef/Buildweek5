@@ -1,5 +1,6 @@
-package it.epicode.azienda_energia.businesslayer.services.interfaces;
+package it.epicode.azienda_energia.businesslayer.services.impl;
 
+import it.epicode.azienda_energia.businesslayer.services.interfaces.MunicipalityService;
 import it.epicode.azienda_energia.datalayer.entities.adresses.Municipality;
 import it.epicode.azienda_energia.datalayer.entities.adresses.Province;
 import it.epicode.azienda_energia.datalayer.repositories.MunicipalityRepository;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
 
 @Service
 @Slf4j
-public class MunicipalityServiceImpl implements MunicipalityService{
+public class MunicipalityServiceImpl implements MunicipalityService {
 
     @Autowired
     MunicipalityRepository municipalityRepository;

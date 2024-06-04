@@ -1,5 +1,7 @@
 package it.epicode.azienda_energia.datalayer.entities.adresses;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
 
 import it.epicode.azienda_energia.datalayer.entities.Customer;
@@ -23,6 +25,7 @@ public class Address extends BaseEntity implements Serializable {
     private String location;
     private int zip;
     @ManyToOne
+    @JsonManagedReference
     private Municipality municipality;
 
     @OneToOne(mappedBy = "headquarters")

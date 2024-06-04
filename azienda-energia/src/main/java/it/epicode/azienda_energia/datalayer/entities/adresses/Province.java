@@ -1,5 +1,7 @@
 package it.epicode.azienda_energia.datalayer.entities.adresses;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.epicode.azienda_energia.datalayer.entities.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,5 +21,6 @@ public class Province extends BaseEntity {
     private String acronym;
     private String region;
     @OneToMany(mappedBy = "province")
+    @JsonBackReference
     private List<Municipality> municipalities;
 }

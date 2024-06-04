@@ -1,5 +1,6 @@
-package it.epicode.azienda_energia.businesslayer.services.interfaces;
+package it.epicode.azienda_energia.businesslayer.services.impl;
 
+import it.epicode.azienda_energia.businesslayer.services.interfaces.ProvinceService;
 import it.epicode.azienda_energia.datalayer.entities.adresses.Province;
 import it.epicode.azienda_energia.datalayer.repositories.ProvinceRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import java.util.stream.Stream;
 
 @Service
 @Slf4j
-public class ProvinceServiceImpl implements ProvinceService{
+public class ProvinceServiceImpl implements ProvinceService {
 
 
     //aggiungere i metodi crud

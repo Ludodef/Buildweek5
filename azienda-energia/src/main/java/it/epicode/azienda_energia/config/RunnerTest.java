@@ -25,8 +25,8 @@ public class RunnerTest implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        provinceImpl.addProvince();
-        municipalityImpl.addMunicipality();
+        //provinceImpl.addProvince();
+        //municipalityImpl.addMunicipality();
     }
 }
 
