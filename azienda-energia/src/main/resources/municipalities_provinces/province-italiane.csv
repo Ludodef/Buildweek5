@@ -15,7 +15,7 @@ BN;Benevento;Campania
 BG;Bergamo;Lombardia
 BI;Biella;Piemonte
 BO;Bologna;Emilia Romagna
-BZ;Bolzano/Bozen;Trentino Alto Adige
+BZ;Bolzano;Trentino Alto Adige
 BS;Brescia;Lombardia
 BR;Brindisi;Puglia
 CA;Cagliari;Sardegna
@@ -106,8 +106,8 @@ VA;Varese;Lombardia
 VE;Venezia;Veneto
 VB;Verbania;Piemonte
 VC;Vercelli;Piemonte
-VCO;Verbano-Cusio-Ossola;Piemonte
 VR;Verona;Veneto
 VV;Vibo Valentia;Calabria
 VI;Vicenza;Veneto
 VT;Viterbo;Lazio
+VDA;Verbano-Cusio-Ossola;Piemonte

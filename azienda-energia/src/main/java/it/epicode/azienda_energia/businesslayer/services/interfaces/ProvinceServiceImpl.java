@@ -32,7 +32,7 @@ public class ProvinceServiceImpl implements ProvinceService{
     @Override
     public List<Province> addProvince() throws IOException {
         List<Province> province = new ArrayList<>();
-        try (Stream<String> lines = Files.lines(Path.of(dir + "/src/main/resources/municipalities_provinces/province-italiane.csv"), StandardCharsets.ISO_8859_1)) {
+        try (Stream<String> lines = Files.lines(Path.of(dir + "/src/main/resources/municipalities_provinces/province-italiane.csv"), StandardCharsets.UTF_8)) {
             province = lines
                     .skip(1)
                     .map(line -> line.split(";"))
