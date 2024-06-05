@@ -24,7 +24,7 @@ public class Address extends BaseEntity {
     private String street;
     private String number;
     private String location;
-    private int zip;
+    private Integer zip;
 
     @ManyToOne
     private Municipality municipality;

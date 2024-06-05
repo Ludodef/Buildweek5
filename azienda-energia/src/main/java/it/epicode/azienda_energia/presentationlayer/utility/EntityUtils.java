@@ -19,6 +19,8 @@ public class EntityUtils {
     public @interface Ignore {
     }
 
+
+
     public <E> void copy(E source, E destination) {
         Stream.of(source.getClass().getMethods())
                 .filter(m -> m.getName().startsWith("get") && !m.getName().equals("getClass"))
@@ -28,7 +30,7 @@ public class EntityUtils {
                         var dm = destination.getClass().getMethod(setterName, m.getReturnType());
                         if (!dm.isAnnotationPresent(Ignore.class)) {
                             var res = m.invoke(source);
-                            if (res != null || !m.getReturnType().isPrimitive()) {
+                            if (res != null ) {
                                 dm.invoke(destination, res);
                             }
                         }
