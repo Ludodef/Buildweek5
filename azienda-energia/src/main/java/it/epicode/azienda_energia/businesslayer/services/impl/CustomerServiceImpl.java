@@ -1,5 +1,7 @@
 package it.epicode.azienda_energia.businesslayer.services.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import it.epicode.azienda_energia.businesslayer.services.dto.CustomerDTO;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.CustomerService;
 import it.epicode.azienda_energia.datalayer.entities.Customer;
@@ -9,9 +11,13 @@ import it.epicode.azienda_energia.presentationlayer.api.exceptions.duplicated.*;
 import it.epicode.azienda_energia.presentationlayer.utility.EntityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -22,6 +28,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Autowired
     EntityUtils utils;
+
+    @Value("CLOUDINARY_URL")
+    private String cloudinaryUrl;
 
     @Override
     public Page<Customer> getAll(Pageable p) {
@@ -96,5 +105,15 @@ public class CustomerServiceImpl implements CustomerService {
         var customer = this.getById(id);
         customerRepository.delete(customer);
         return customer;
+    }
+
+
+    @Override
+    public Customer saveCompanyLogo(long id, MultipartFile file) throws IOException {
+        var customer = this.getById(id);
+        Cloudinary cloudinary = new Cloudinary(cloudinaryUrl);
+        var image = (String) cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap()).get("url");
+        customer.setCompanyLogo(image);
+        return customerRepository.save(customer);
     }
 }

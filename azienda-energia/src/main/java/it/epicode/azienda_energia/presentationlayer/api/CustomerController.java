@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("api/customer")
@@ -94,5 +97,14 @@ public class CustomerController {
     ) {
         var a = customer.delete(id);
         return new ResponseEntity<>(a, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{Id}/companyLogo")
+    public Customer uploadAvatar(@RequestParam("companyLogo") MultipartFile file, @PathVariable int Id) {
+        try {
+            return customer.saveCompanyLogo(Id, file);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
