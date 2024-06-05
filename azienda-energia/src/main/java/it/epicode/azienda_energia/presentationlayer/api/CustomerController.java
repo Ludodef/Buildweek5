@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class CustomerController {
 
     @Autowired
     AddressService address;
+
 
     @GetMapping
     public ResponseEntity<Page<Customer>> getAllCustomers (Pageable p) {
@@ -99,10 +101,10 @@ public class CustomerController {
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
 
-    @PatchMapping("/{Id}/companyLogo")
-    public Customer uploadAvatar(@RequestParam("companyLogo") MultipartFile file, @PathVariable int Id) {
+    @PatchMapping("/{id}/companyLogo")
+    public Customer uploadAvatar(@RequestParam("companyLogo") MultipartFile file, @PathVariable Long id) {
         try {
-            return customer.saveCompanyLogo(Id, file);
+            return customer.saveCompanyLogo(id, file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -28,11 +28,6 @@ public class InvoiceStatusServiceImpl implements InvoiceStatusService {
     }
 
     @Override
-    public InvoiceStatus getById(Long id) {
-        return invoiceStatusRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
-    }
-
-    @Override
     public InvoiceStatus save(InvoiceStatusDTO e) {
         return invoiceStatusRepository.save(InvoiceStatus.builder()
                         .withType(e.getType())
@@ -41,7 +36,7 @@ public class InvoiceStatusServiceImpl implements InvoiceStatusService {
 
     @Override
     public InvoiceStatus delete(Long id) {
-        var i = this.getById(id);
+        var i = invoiceStatusRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
         invoiceStatusRepository.delete(i);
         return i;
     }

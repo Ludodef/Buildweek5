@@ -1,6 +1,7 @@
 package it.epicode.azienda_energia.config;
 
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.ApiValidationException;
+import it.epicode.azienda_energia.presentationlayer.api.exceptions.InvalidLoginException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.NotFoundException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.duplicated.DuplicateKeyException;
 import org.springframework.core.Ordered;
@@ -54,9 +55,9 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
-//    @ExceptionHandler(InvalidLoginException.class)
-//    protected ResponseEntity<?> handleInvalidLoginException(InvalidLoginException e) {
-//        return new ResponseEntity<>(new ExceptionInvalidLoginInfo(e.username, e.password, e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
-//    }
+    @ExceptionHandler(InvalidLoginException.class)
+    protected ResponseEntity<?> handleInvalidLoginException(InvalidLoginException e) {
+        return new ResponseEntity<>(new ExceptionInvalidLoginInfo(e.username, e.password, e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
+    }
 
 }

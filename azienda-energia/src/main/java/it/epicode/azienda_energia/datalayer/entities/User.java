@@ -1,5 +1,6 @@
 package it.epicode.azienda_energia.datalayer.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,18 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @Builder(setterPrefix = "with")
 public class User extends BaseEntity{
-    @Column(length = 125, unique = true, nullable = false)
-    @EqualsAndHashCode.Include
-    private String username;
-    @Column(length = 125, nullable = false)
-    private String email;
-    @Column(length = 125, nullable = false, unique = true)
-    private String password;
-    @Column(length = 25, nullable = false)
+
+    @Column(length = 50, nullable = false)
     private String firstName;
-    @Column(length = 25, nullable = false)
+    @Column(length = 50, nullable = false)
     private String lastName;
-    @Column(length = 25, nullable = false)
+    @Column(length = 50, nullable = false, unique = true)
+    private String username;
+    @Column(length = 100, nullable = false, unique = true)
+    private String email;
+    @Column(length = 125, nullable = false)
+    private String password;
     private String avatar;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private final List<Roles> roles = new ArrayList<>();

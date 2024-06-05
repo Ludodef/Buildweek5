@@ -32,12 +32,6 @@ public class InvoiceStatusController {
         return new ResponseEntity<>(allInvoicesStatus, headers, HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<InvoiceStatus> getInvoiceStatus (@PathVariable Long id) {
-        var e = invoiceStatus.getById(id);
-        return new ResponseEntity<>(e, HttpStatus.FOUND);
-    }
-
     @PostMapping
     public ResponseEntity<InvoiceStatus> addInvoiceStatus (
             @RequestBody @Validated InvoiceStatusModel model,
