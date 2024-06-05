@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Autowired
     EntityUtils utils;
 
-    @Value("CLOUDINARY_URL")
+    @Value("${CLOUDINARY_URL}")
     private String cloudinaryUrl;
 
     @Override

@@ -10,5 +10,5 @@ public interface InvoiceStatusRepository extends
         JpaRepository<InvoiceStatus, Long>,
         PagingAndSortingRepository<InvoiceStatus, Long> {
 
-    Optional<InvoiceStatus> findOneByType(String name);
+    Optional<InvoiceStatus> findOneByType(String type);
 }

@@ -28,7 +28,7 @@ public class EntityUtils {
                         var dm = destination.getClass().getMethod(setterName, m.getReturnType());
                         if (!dm.isAnnotationPresent(Ignore.class)) {
                             var res = m.invoke(source);
-                            if (res != null) {
+                            if (res != null || !m.getReturnType().isPrimitive()) {
                                 dm.invoke(destination, res);
                             }
                         }

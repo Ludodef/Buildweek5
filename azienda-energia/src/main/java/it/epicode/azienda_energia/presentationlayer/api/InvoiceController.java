@@ -70,7 +70,7 @@ public class InvoiceController {
     @PutMapping("{id}")
     public ResponseEntity<Invoice> updateInvoice (
             @PathVariable Long id,
-            @RequestBody String type
+            @RequestParam("type") String type
     ){
         var a = invoice.update(id, type);
         return new ResponseEntity<>(a, HttpStatus.OK);

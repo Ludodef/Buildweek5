@@ -67,9 +67,9 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice update(Long id, String type) {
         var invoice = this.getById(id);
-
+log.info(type);
         var status = invoiceStatusRepository.findOneByType(type);
-
+log.info(status.toString());
         if (status.isEmpty())
             throw new NoSuchElementException("Non ho trovato nessuno InvoiceStatus");
 
