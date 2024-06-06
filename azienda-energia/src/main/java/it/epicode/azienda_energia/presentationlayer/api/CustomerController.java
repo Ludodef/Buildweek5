@@ -109,4 +109,23 @@ public class CustomerController {
             throw new RuntimeException(e);
         }
     }
+    @GetMapping("/ordered")
+    public Page<Customer> getCustomersOrdered(
+            @RequestParam String orderBy,
+            Pageable pageable) {
+        switch (orderBy) {
+            case "name":
+                return customer.getCustomersOrderedByBusinessName(pageable);
+            case "annualSales":
+                return customer.getCustomersOrderedByAnnualSales(pageable);
+            case "insertionDate":
+                return customer.getCustomersOrderedByInsertionDate(pageable);
+            case "lastContact":
+                return customer.getCustomersOrderedByLastContact(pageable);
+            case "province":
+                return customer.getCustomersOrderedByProvince(pageable);
+            default:
+                throw new IllegalArgumentException("Invalid orderBy parameter");
+        }
+    }
 }

@@ -140,7 +140,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> getCustomersOrderedByProvince(Pageable pageable) {
-        return customerRepository.findAllByRegisteredOffice_Province_Name(pageable);
+        return customerRepository.findAllByRegisteredOffice_Municipality_Province_Name(pageable);
     }
 
     @Override

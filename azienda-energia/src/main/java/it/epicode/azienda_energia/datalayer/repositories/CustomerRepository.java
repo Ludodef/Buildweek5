@@ -26,7 +26,7 @@ public interface CustomerRepository extends
     Page<Customer> findAllByOrderByAnnualSales(Pageable pageable);
     Page<Customer> findAllByOrderByInsertionDate(Pageable pageable);
     Page<Customer> findAllByOrderByLastContact(Pageable pageable);
-    Page<Customer> findAllByRegisteredOffice_Province_Name(Pageable pageable);
+    Page<Customer> findAllByRegisteredOffice_Municipality_Province_Name(Pageable pageable);
 
     Page<Customer> findByAnnualSalesGreaterThanEqual(double annualSales, Pageable pageable);
     Page<Customer> findByInsertionDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
