@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 @Service
@@ -83,5 +84,35 @@ log.info(status.toString());
         var i = this.getById(id);
         invoiceRepository.delete(i);
         return i;
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByCustomer(String customerName, Pageable pageable) {
+        return invoiceRepository.findByCustomer_BusinessName(customerName, pageable);
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByStatus(String status, Pageable pageable) {
+        return invoiceRepository.findByStatus_Type(status, pageable);
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByDate(LocalDate date, Pageable pageable) {
+        return invoiceRepository.findByDate(date, pageable);
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByDateRange(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return invoiceRepository.findByDateBetween(startDate, endDate, pageable);
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByYear(int year, Pageable pageable) {
+        return invoiceRepository.findByDateYear(year, pageable);
+    }
+
+    @Override
+    public Page<Invoice> filterInvoicesByAmountRange(double minAmount, double maxAmount, Pageable pageable) {
+        return invoiceRepository.findByAmountBetween(minAmount, maxAmount, pageable);
     }
 }
