@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 @Slf4j
@@ -116,4 +117,51 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setCompanyLogo(image);
         return customerRepository.save(customer);
     }
+
+    @Override
+    public Page<Customer> getCustomersOrderedByBusinessName(Pageable pageable) {
+        return customerRepository.findAllByOrderByBusinessName(pageable);
+    }
+
+    @Override
+    public Page<Customer> getCustomersOrderedByAnnualSales(Pageable pageable) {
+        return customerRepository.findAllByOrderByAnnualSales(pageable);
+    }
+
+    @Override
+    public Page<Customer> getCustomersOrderedByInsertionDate(Pageable pageable) {
+        return customerRepository.findAllByOrderByInsertionDate(pageable);
+    }
+
+    @Override
+    public Page<Customer> getCustomersOrderedByLastContact(Pageable pageable) {
+        return customerRepository.findAllByOrderByLastContact(pageable);
+    }
+
+    @Override
+    public Page<Customer> getCustomersOrderedByProvince(Pageable pageable) {
+        return customerRepository.findAllByRegisteredOffice_Province_Name(pageable);
+    }
+
+    @Override
+    public Page<Customer> filterCustomersByAnnualSales(double annualSales, Pageable pageable) {
+        return customerRepository.findByAnnualSalesGreaterThanEqual(annualSales, pageable);
+    }
+
+    @Override
+    public Page<Customer> filterCustomersByInsertionDate(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return customerRepository.findByInsertionDateBetween(startDate, endDate, pageable);
+    }
+
+    @Override
+    public Page<Customer> filterCustomersByLastContact(LocalDate startDate, LocalDate endDate, Pageable pageable) {
+        return customerRepository.findByLastContactBetween(startDate, endDate, pageable);
+    }
+
+    @Override
+    public Page<Customer> filterCustomersByName(String name, Pageable pageable) {
+        return customerRepository.findByBusinessNameContainingIgnoreCase(name, pageable);
+    }
+
+
 }
