@@ -17,4 +17,6 @@ public interface CustomerRepository extends
     Optional<Customer> findByPec(String pec);
     Optional<Customer> findByPhoneNumber(Long phoneNumber);
     Optional<Customer> findByContactEmail(String contactEmail);
+
+
 }
