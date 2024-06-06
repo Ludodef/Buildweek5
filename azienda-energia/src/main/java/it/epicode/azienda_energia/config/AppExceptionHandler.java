@@ -33,6 +33,11 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             ){}
 
 
+    @ExceptionHandler(RuntimeException.class)
+    protected ResponseEntity<?> handleRuntimeException(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
+    }
+
     @ExceptionHandler(DuplicateKeyException.class)
     protected ResponseEntity<?> handleDuplicatedKey(DuplicateKeyException e) {
         return new ResponseEntity<>(new ExceptionInfo(e.getMessage(), e.key), e.status);

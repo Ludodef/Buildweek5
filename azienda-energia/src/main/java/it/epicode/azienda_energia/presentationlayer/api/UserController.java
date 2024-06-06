@@ -5,9 +5,7 @@ import it.epicode.azienda_energia.businesslayer.services.dto.LoginResponseDTO;
 import it.epicode.azienda_energia.businesslayer.services.dto.RegisterUserDTO;
 import it.epicode.azienda_energia.businesslayer.services.dto.RegisteredUserDTO;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.UserService;
-import it.epicode.azienda_energia.datalayer.entities.Customer;
 import it.epicode.azienda_energia.datalayer.entities.User;
-import it.epicode.azienda_energia.datalayer.entities.invoices.Invoice;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.ApiValidationException;
 import it.epicode.azienda_energia.presentationlayer.api.models.LoginModel;
 import it.epicode.azienda_energia.presentationlayer.api.models.RegisterUserModel;
@@ -17,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -70,12 +69,32 @@ public class UserController {
         return new ResponseEntity<>(user.login(model.username(), model.password()).orElseThrow(), HttpStatus.OK);
     }
 
-    @PutMapping("{id}")
-    public ResponseEntity<RegisteredUserDTO> updateInvoice (
+    @PatchMapping("{id}")
+    public ResponseEntity<RegisteredUserDTO> updateUser (
             @PathVariable Long id,
-            @RequestParam("type") User newuser
+            @RequestParam("username") String username
     ){
-        var u = user.update(id, newuser);
+        var u = user.update(id, username);
+        return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/addToRole")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<RegisteredUserDTO> addUserRole (
+            @PathVariable Long id,
+            @RequestParam("role") String role
+    ){
+        var u = user.addRole(id, role);
+        return new ResponseEntity<>(u, HttpStatus.OK);
+    }
+
+    @PatchMapping("{id}/removeToRole")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<RegisteredUserDTO> removeUserRole (
+            @PathVariable Long id,
+            @RequestParam("role") String role
+    ){
+        var u = user.removeRole(id, role);
         return new ResponseEntity<>(u, HttpStatus.OK);
     }
 
@@ -95,5 +114,6 @@ public class UserController {
             throw new RuntimeException(e);
         }
     }
+
 
 }

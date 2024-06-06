@@ -21,9 +21,12 @@ public interface UserService {
 
     Page<User> getAll(Pageable p);
 
-    RegisteredUserDTO update(long id, User user);
+    RegisteredUserDTO update(long id, String username);
 
     RegisteredUserDTO delete(Long id);
+
+    RegisteredUserDTO addRole(Long id, String role);
+    RegisteredUserDTO removeRole(Long id, String role);
 
     User saveAvatar(long id, MultipartFile file) throws IOException;
 }

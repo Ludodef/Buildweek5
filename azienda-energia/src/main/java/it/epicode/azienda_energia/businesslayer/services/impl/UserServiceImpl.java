@@ -30,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -65,8 +66,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     Mapper<User, LoginResponseDTO> mapLogin;
 
-    @Autowired
-    EntityUtils utils;
 
     @Value("${CLOUDINARY_URL}")
     private String cloudinaryUrl;
@@ -140,12 +139,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RegisteredUserDTO update(long id, User e) {
+    public RegisteredUserDTO update(long id, String username) {
         var user = usersRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
-        utils.copy(e, user);
-        var p = encoder.encode(e.getPassword());
-        user.setPassword(p);
-        return mapRegisteredUser.map(usersRepository.save(user));
+
+        var usernameDuplicated = usersRepository.findOneByUsername(username);
+
+        if (usernameDuplicated.isPresent()) {
+            throw new DuplicateUsernameException(username);
+        } else {
+            user.setUsername(username);
+            return mapRegisteredUser.map(usersRepository.save(user));
+        }
     }
 
 
@@ -161,6 +165,35 @@ public class UserServiceImpl implements UserService {
         } catch (Exception e) {
             log.error(String.format("Error deleting user with id = %s", id), e);
             throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public RegisteredUserDTO addRole(Long id, String role) {
+        var roleEntity = roles.findOneByRoleType(role);
+        var user = usersRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+        if (roleEntity.isEmpty()) {
+            throw new RuntimeException("Il ruolo che stai tentando di aggiungere non esiste");
+        } else if (user.getRoles().contains(roleEntity.get())) {
+            throw new RuntimeException("Il ruolo che stai tentando di aggiungere è gia presente");
+        } else {
+            user.getRoles().add(roleEntity.get());
+            return mapRegisteredUser.map(usersRepository.save(user));
+        }
+    }
+
+    @Override
+    public RegisteredUserDTO removeRole(Long id, String role) {
+        var roleEntity = roles.findOneByRoleType(role);
+        var user = usersRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+        if (roleEntity.isEmpty()) {
+            throw new RuntimeException("Il ruolo che stai tentando di rimuovere non esiste");
+        } else if (!user.getRoles().contains(roleEntity.get())) {
+            throw new RuntimeException("Il ruolo che stai tentando di rimuovere non è presente");
+        }  else {
+            user.getRoles().remove(roleEntity.get());
+            return mapRegisteredUser.map(usersRepository.save(user));
+
         }
     }
 

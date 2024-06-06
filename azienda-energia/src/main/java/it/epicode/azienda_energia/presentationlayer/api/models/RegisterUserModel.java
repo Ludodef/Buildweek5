@@ -1,6 +1,5 @@
 package it.epicode.azienda_energia.presentationlayer.api.models;
 
-import it.epicode.azienda_energia.presentationlayer.utility.EqualsTo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
