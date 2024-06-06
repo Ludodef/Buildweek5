@@ -1,10 +1,10 @@
 package it.epicode.azienda_energia.datalayer.repositories;
 
 import it.epicode.azienda_energia.datalayer.entities.Customer;
-import it.epicode.azienda_energia.datalayer.entities.adresses.Province;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.time.LocalDate;
@@ -25,8 +25,9 @@ public interface CustomerRepository extends
     Page<Customer> findAllByOrderByBusinessName(Pageable pageable);
     Page<Customer> findAllByOrderByAnnualSales(Pageable pageable);
     Page<Customer> findAllByOrderByInsertionDate(Pageable pageable);
-    Page<Customer> findAllByOrderByLastContact(Pageable pageable);
-    Page<Customer> findAllByRegisteredOffice_Municipality_Province_Name(Pageable pageable);
+    Page<Customer> findAllByOrderByLastContactAsc(Pageable pageable);
+    @Query("SELECT c FROM Customer c JOIN c.registeredOffice ro JOIN ro.municipality m JOIN m.province p ORDER BY p.name")
+    Page<Customer> findAllOrderByRegisteredOfficeProvinceName(Pageable pageable);
 
     Page<Customer> findByAnnualSalesGreaterThanEqual(double annualSales, Pageable pageable);
     Page<Customer> findByInsertionDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);

@@ -11,6 +11,7 @@ import it.epicode.azienda_energia.presentationlayer.api.models.CustomerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("api/customer")
@@ -113,19 +115,60 @@ public class CustomerController {
     public Page<Customer> getCustomersOrdered(
             @RequestParam String orderBy,
             Pageable pageable) {
-        switch (orderBy) {
-            case "name":
-                return customer.getCustomersOrderedByBusinessName(pageable);
+        return switch (orderBy) {
+            case "name" -> customer.getCustomersOrderedByBusinessName(pageable);
+            case "annualSales" -> customer.getCustomersOrderedByAnnualSales(pageable);
+            case "insertionDate" -> customer.getCustomersOrderedByInsertionDate(pageable);
+            case "lastContact" -> customer.getCustomersOrderedByLastContact(pageable);
+            case "province" -> customer.getCustomersOrderedByProvince(pageable);
+            default -> throw new IllegalArgumentException("Invalid orderBy parameter. Inserisci {name, annualSales //" +
+                    "insertionDate, lastContact, province}");
+        };
+    }
+
+   @GetMapping("/filter")
+    public ResponseEntity<Page<Customer>> filterCustomers(
+            @RequestParam String filterType,
+            @RequestParam(required = false) Double annualSales,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) String name,
+            Pageable pageable) {
+
+        Page<Customer> customers;
+        switch (filterType) {
             case "annualSales":
-                return customer.getCustomersOrderedByAnnualSales(pageable);
+                if (annualSales == null) {
+                    return ResponseEntity.badRequest().build();
+                }
+                customers = customer.filterCustomersByAnnualSales(annualSales, pageable);
+                break;
+
             case "insertionDate":
-                return customer.getCustomersOrderedByInsertionDate(pageable);
+                if (startDate == null || endDate == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            customers = customer.filterCustomersByInsertionDate(startDate, endDate, pageable);
+            break;
+
             case "lastContact":
-                return customer.getCustomersOrderedByLastContact(pageable);
-            case "province":
-                return customer.getCustomersOrderedByProvince(pageable);
+                if (startDate == null || endDate == null) {
+                return ResponseEntity.badRequest().build();
+            }
+            customers = customer.filterCustomersByLastContact(startDate, endDate, pageable);
+            break;
+
+            case "name":
+                if (name == null) {
+                    return ResponseEntity.badRequest().build();
+                }
+                customers = customer.filterCustomersByName(name, pageable);
+                break;
+
             default:
-                throw new IllegalArgumentException("Invalid orderBy parameter");
+                throw new RuntimeException("Invalid filterType value");
         }
+
+        return ResponseEntity.ok(customers);
     }
 }

@@ -135,12 +135,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Page<Customer> getCustomersOrderedByLastContact(Pageable pageable) {
-        return customerRepository.findAllByOrderByLastContact(pageable);
+        return customerRepository.findAllByOrderByLastContactAsc(pageable);
     }
 
     @Override
     public Page<Customer> getCustomersOrderedByProvince(Pageable pageable) {
-        return customerRepository.findAllByRegisteredOffice_Municipality_Province_Name(pageable);
+        return customerRepository.findAllOrderByRegisteredOfficeProvinceName(pageable);
     }
 
     @Override

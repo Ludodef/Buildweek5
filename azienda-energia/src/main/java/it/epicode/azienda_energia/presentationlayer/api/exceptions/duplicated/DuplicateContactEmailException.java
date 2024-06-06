@@ -11,6 +11,6 @@ public class DuplicateContactEmailException extends DuplicateKeyException{
 
 
     public DuplicateContactEmailException(String key) {
-        super(key, HttpStatus.BAD_REQUEST, "BusinessName duplicato");
+        super(key, HttpStatus.BAD_REQUEST, "ContactEmail duplicata");
     }
 }

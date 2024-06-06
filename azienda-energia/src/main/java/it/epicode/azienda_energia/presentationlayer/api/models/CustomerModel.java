@@ -5,6 +5,7 @@ import it.epicode.azienda_energia.presentationlayer.utility.VatNumberValid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public record CustomerModel (
         @NotBlank(message = "Il businessName non può essere omesso")
@@ -13,6 +14,7 @@ public record CustomerModel (
         String vatNumber,
         @NotBlank(message = "La businessEmail non può essere omessa")
         String businessEmail,
+        @Positive(message = "L'annual sales deve essere un numero positivo")
         double annualSales,
         @Email
         String pec,
