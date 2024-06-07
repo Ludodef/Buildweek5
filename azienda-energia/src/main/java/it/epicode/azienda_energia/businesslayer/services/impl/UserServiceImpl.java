@@ -22,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -34,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -193,16 +192,39 @@ public class UserServiceImpl implements UserService {
     public RegisteredUserDTO removeRole(Long id, String role) {
         var roleEntity = roles.findOneByRoleType(role);
         var user = usersRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
-        //DOVREMMO CONTROLLARE CHE ESISTA ALMENO UN ADMIN E SOPRATTUTO CHE OGNI PEROSNA DEVE AVERE ALMENO UN RUOLO
+
+
+        // Verifica che il ruolo esista
         if (roleEntity.isEmpty()) {
             throw new RuntimeException("Il ruolo che stai tentando di rimuovere non esiste");
-        } else if (!user.getRoles().contains(roleEntity.get())) {
-            throw new RuntimeException("Il ruolo che stai tentando di rimuovere non è presente");
-        }  else {
-            user.getRoles().remove(roleEntity.get());
-            return mapRegisteredUser.map(usersRepository.save(user));
-
         }
+
+        // Verifica che l'utente abbia il ruolo specificato
+        if (!user.getRoles().contains(roleEntity.get())) {
+            throw new RuntimeException("Il ruolo che stai tentando di rimuovere non è presente");
+        }
+
+        // Verifica specifica per il ruolo ADMIN
+        if (Objects.equals(role, "ADMIN")) {
+            var adminUsers = usersRepository.findByRoles_RoleType(role);
+
+            // Controlla che ci siano altri admin
+            if (adminUsers.size() == 1) {
+                throw new RuntimeException("Deve esistere almeno un admin sul database");
+            }
+        }
+
+        // Verifica che l'utente abbia almeno un altro ruolo oltre a quello da rimuovere
+        if (user.getRoles().size() == 1 && user.getRoles().contains(roleEntity.get())) {
+            throw new RuntimeException("Un utente deve avere almeno un ruolo");
+        }
+
+        // Rimuovi il ruolo
+        user.getRoles().remove(roleEntity.get());
+
+        // Salva le modifiche e ritorna l'utente aggiornato
+        return mapRegisteredUser.map(usersRepository.save(user));
+
     }
 
 

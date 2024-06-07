@@ -64,6 +64,7 @@ public class BeansConfiguration {
 				.build();
 	}
 
+
 	@Bean
 	public JavaMailSenderImpl getJavaMailSender(@Value("${gmail.mail.transport.protocol}" ) String protocol,
 			@Value("${gmail.mail.smtp.auth}" ) String auth,
