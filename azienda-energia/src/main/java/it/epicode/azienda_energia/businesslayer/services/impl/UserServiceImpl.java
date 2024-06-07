@@ -5,6 +5,7 @@ import com.cloudinary.utils.ObjectUtils;
 import it.epicode.azienda_energia.businesslayer.services.dto.LoginResponseDTO;
 import it.epicode.azienda_energia.businesslayer.services.dto.RegisterUserDTO;
 import it.epicode.azienda_energia.businesslayer.services.dto.RegisteredUserDTO;
+import it.epicode.azienda_energia.businesslayer.services.interfaces.MailService;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.Mapper;
 import it.epicode.azienda_energia.businesslayer.services.interfaces.UserService;
 import it.epicode.azienda_energia.config.JwtUtils;
@@ -16,12 +17,13 @@ import it.epicode.azienda_energia.presentationlayer.api.exceptions.InvalidLoginE
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.NotFoundException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.duplicated.DuplicateEmailException;
 import it.epicode.azienda_energia.presentationlayer.api.exceptions.duplicated.DuplicateUsernameException;
-import it.epicode.azienda_energia.presentationlayer.utility.EntityUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -30,7 +32,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.management.relation.Role;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -70,6 +71,9 @@ public class UserServiceImpl implements UserService {
     @Value("${CLOUDINARY_URL}")
     private String cloudinaryUrl;
 
+    @Autowired
+    MailService mailService;
+
     @Override
     public RegisteredUserDTO register(RegisterUserDTO newUser) {
         var emailDuplicated = usersRepository.findByEmail(newUser.getEmail());
@@ -101,7 +105,10 @@ public class UserServiceImpl implements UserService {
                                             .build()
                             );
                         }
-                return mapRegisteredUser.map(usersRepository.save(userEntity));
+                var u = mapRegisteredUser.map(usersRepository.save(userEntity));
+                       mailService.sendMail(newUser.getEmail(), "Registrazione avvenuta con successo",
+                                newUser.getFirstName() + " " + newUser.getLastName() + " hai effettuato con successo la tua registrazione" );
+                       return u;
             } catch (Exception e) {
                 log.error(String.format("Exception saving user %s", usersRepository), e);
                 throw new RuntimeException();
@@ -186,6 +193,7 @@ public class UserServiceImpl implements UserService {
     public RegisteredUserDTO removeRole(Long id, String role) {
         var roleEntity = roles.findOneByRoleType(role);
         var user = usersRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
+        //DOVREMMO CONTROLLARE CHE ESISTA ALMENO UN ADMIN E SOPRATTUTO CHE OGNI PEROSNA DEVE AVERE ALMENO UN RUOLO
         if (roleEntity.isEmpty()) {
             throw new RuntimeException("Il ruolo che stai tentando di rimuovere non esiste");
         } else if (!user.getRoles().contains(roleEntity.get())) {
@@ -206,4 +214,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(url);
         return usersRepository.save(user);
     }
+
+
+
 }

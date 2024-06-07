@@ -29,4 +29,5 @@ public interface UserService {
     RegisteredUserDTO removeRole(Long id, String role);
 
     User saveAvatar(long id, MultipartFile file) throws IOException;
+
 }

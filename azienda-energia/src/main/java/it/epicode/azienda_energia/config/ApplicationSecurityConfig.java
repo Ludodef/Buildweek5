@@ -32,14 +32,18 @@ public class ApplicationSecurityConfig {
 		return new AuthTokenFilter();
 	}
 
-	@SuppressWarnings("removal")
 	@Bean
-	AuthenticationManager authenticationManager(HttpSecurity http, //
-			PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) throws Exception {
-		return http.getSharedObject(AuthenticationManagerBuilder.class) //
-				.userDetailsService(userDetailsService) //
-				.passwordEncoder(passwordEncoder) //
-				.and().build();
+	public AuthenticationManager authenticationManager(HttpSecurity http,
+			PasswordEncoder passwordEncoder,
+			UserDetailsService userDetailsService) throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder =
+				http.getSharedObject(AuthenticationManagerBuilder.class);
+
+		authenticationManagerBuilder
+				.userDetailsService(userDetailsService)
+				.passwordEncoder(passwordEncoder);
+
+		return authenticationManagerBuilder.build();
 	}
 
 	@Bean
